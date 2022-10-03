@@ -13,14 +13,12 @@ app.get('/', (req, res) => {
 
 //ROUTE FOR API/NOTES PAGE
 app.get('/notes', (req, res) => {
-    let data = fs.readFileSync('Develop/db/db.json');
-    let notes = JSON.parse(data);
-    let formattedNotes = JSON.stringify(notes);
-    console.log(formattedNotes);
-     //renderNoteList(notes);
-    // add existin notes rendering in left hand column
-    res.sendFile('/Users/shadinalarab/2022 BOOTCAMP/miniature-eureka/Develop/public/notes.html');
-})
+  fs.readFile('/Develop/db/db.json', function (err, data) {
+    let getNoteData = JSON.parse(data);
+    res.json(getNoteData)
+  });
+    res.sendFile('/Develop/public/notes.html');
+});
 
 //ROUTE TO POST NOTES
 app.post()
