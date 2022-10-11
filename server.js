@@ -22,10 +22,6 @@ app.get('/', (req, res) => {
 
 //ROUTE FOR NOTES PAGE
 app.get('/notes', (req, res) => {
-//   fs.readFile('/Develop/db/db.json', function (err, data) {
-//     var getNoteData = json.parse(data);
-//     res.json(getNoteData)
-//   });
     res.sendFile(path.join(__dirname, 'Develop/public/notes.html'));
 });
 //ROUTE TO GET API
