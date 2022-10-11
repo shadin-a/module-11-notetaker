@@ -30,9 +30,14 @@ app.get('/notes', (req, res) => {
 });
 //ROUTE TO GET API
 app.get('/api/notes', (req,res) => {
-    db = require('./Develop/db/db.json');
-    res.json(db)
-})
+    fs.readFile('Develop/db/db.json', function (err, data) {
+        var db = JSON.parse(data);
+        res.json(db)
+      });
+      });  
+    
+    app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public/index.html'))
+    );
 
 //ROUTE TO POST NOTES
 app.post('/api/notes', (req,res) => {
@@ -44,16 +49,21 @@ app.post('/api/notes', (req,res) => {
             text,
             id: uid(),
         };
-        var diego = fs.readFileSync('Develop/db/db.json', {})
-            const parsedData = JSON.parse(diego);
+        fs.readFile('Develop/db/db.json', 'utf8', (err, data) => {
+            let parsedData = JSON.parse(data);
             parsedData.push(newSavedNote)
-            fs.writeFileSync(path.join(__dirname,'/Develop/db/db.json'), JSON.stringify(parsedData))
+            fs.writeFile(path.join(__dirname,'/Develop/db/db.json'), JSON.stringify(parsedData), (err) =>
+            err
+            ? console.error(err)
+            :console.log('Success on reading the post thing!')
+            );
         }
+    )}
      else {
         console.log("there was an error");
         }
-    res.json(req.body);
-    });
+    res.sendFile(path.join(__dirname, 'Develop/public/notes.html'));
+    })
 
 //ROUTE TO DELETE NOTES
 app.delete('/api/notes/:id', (req, res) =>{
@@ -61,12 +71,13 @@ app.delete('/api/notes/:id', (req, res) =>{
     fs.readFile('Develop/db/db.json', function (err, data) {
         let oldNotes = JSON.parse(data)
         let newNotes = oldNotes.filter(object => object.id !== unwantedID);
-        fs.writeFile('./db/db.json', JSON.stringify(newNotes), (err) =>
+        fs.writeFile('Develop/db/db.json', JSON.stringify(newNotes), (err) =>
         err
         ? console.error(err)
-        : res.json(newNotes)   
+        :console.log('Success on reading the delete thing!')
         );
     });
+    res.sendFile(path.join(__dirname, '.public/notes.html'));
 })
 
 // PORT LISTENING ROUTE
