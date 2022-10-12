@@ -7,7 +7,7 @@ const uid = new ShortUniqueId({ length: 10 });
 const path = require('path');
 
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const app = express();
 
 //MIDDLEWARE
@@ -32,7 +32,7 @@ app.get('/api/notes', (req,res) => {
       });
       });  
     
-    app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public/index.html'))
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public/index.html'))
     );
 
 //ROUTE TO POST NOTES
